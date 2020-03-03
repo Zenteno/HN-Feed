@@ -29,8 +29,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cors()); 
-app.use(express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
-app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
+app.use(express.static(path.join(__dirname, 'dist/app')));
+app.use('/', express.static(path.join(__dirname, 'dist/app')));
 app.use('/api', articleRoute)
 
 // Create port
