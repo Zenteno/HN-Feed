@@ -51,10 +51,12 @@ export class ArticleListComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe(dialogResult => {
-			this.apiService.deleteArticle(article._id).subscribe((data) => {
-				this.ArticleList.splice(index, 1);
-				this.Article = new MatTableDataSource < any > (this.ArticleList);
-			})
+			if(dialogResult){
+				this.apiService.deleteArticle(article._id).subscribe((data) => {
+					this.ArticleList.splice(index, 1);
+					this.Article = new MatTableDataSource < any > (this.ArticleList);
+				});
+			}
 		});
 
 	}

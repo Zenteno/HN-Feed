@@ -7,3 +7,7 @@ table{
 .mat-header-row{
 	display: none;
 }
+
+.mat-row:hover{
+	cursor: pointer;
+}
