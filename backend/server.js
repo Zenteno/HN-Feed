@@ -67,6 +67,7 @@ cron.schedule('0 * * * *', () => {
 		data["hits"].forEach(obj => {
     		const title = obj["title"] || obj["story_title"];
     		const url = obj["url"] || obj["story_url"];
+    		const object_id = obj["objectId"];
     		if(title!=null && url != null){
 	    		const author = obj["author"];
 	    		const created_at = obj["created_at"];
@@ -74,15 +75,23 @@ cron.schedule('0 * * * *', () => {
 	    			title: title,
 	    			url : url,
 	    			created_at: created_at,
-	    			author :  author
+	    			author :  author,
+	    			object_id: object_id,
 	    		};
-	    		Article.create(article, (error, dd) => {
-					if (error) {
-						return next(error)
-					} else {
-						console.log(dd);
+	    		//find if article already exists
+	    		Article.findOne({
+	    			object_id : object_id,
+	    		},(err,art) => {
+	    			//if element doesn't exists, it creates
+	    			if(error){
+	    				Article.create(article, (error, dd) => {
+							if (error) {
+								return next(error)
+							}
+						});
 					}
-				})
+	    		});
+	    		
     		}
 
     		

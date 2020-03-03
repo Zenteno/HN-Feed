@@ -25,6 +25,7 @@ articleRoute.route('/').get((req, res) => {
 			res.json(data)
 		}
 	})
+	.sort({ created_at: -1 })
 })
 
 

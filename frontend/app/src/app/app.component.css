@@ -2,3 +2,7 @@ body{
 	height: 100vh;
 	overflow: hidden;
 }
+
+.mat-toolbar{
+	height: 20vh;
+}
