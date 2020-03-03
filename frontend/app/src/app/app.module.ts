@@ -1,8 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { MatButtonModule} from '@angular/material/button'; 
+import { MatToolbarModule } from '@angular/material/toolbar'; 
+import { MatTableModule } from '@angular/material/table'; 
+import { MatIconModule } from '@angular/material/icon'; 
 
 import { ArticleListComponent } from './components/article-list/article-list.component';
 
@@ -20,7 +25,12 @@ import { ApiService } from './service/api.service';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

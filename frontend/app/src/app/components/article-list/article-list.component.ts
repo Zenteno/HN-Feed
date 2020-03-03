@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './../../service/api.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-article-list',
+  selector: '/',
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.css']
 })
 
 export class ArticleListComponent implements OnInit {
   
-  Article:any = [];
+  Article: MatTableDataSource<any>;
+  ArticleList:any = [];
 
   constructor(private apiService: ApiService) { 
     this.readArticle();
@@ -19,17 +21,24 @@ export class ArticleListComponent implements OnInit {
 
   readArticle(){
     this.apiService.getArticles().subscribe((data) => {
-     this.Article = data;
+     this.ArticleList = data;
+     this.Article = new MatTableDataSource<any>(this.ArticleList);
     })    
   }
 
-  removeArticle(article, index) {
+  removeArticle(article,index) {
     if(window.confirm('Are you sure?')) {
         this.apiService.deleteArticle(article._id).subscribe((data) => {
-          this.Article.splice(index, 1);
+          this.ArticleList.splice(index, 1);
+          this.Article = new MatTableDataSource<any>(this.ArticleList);
         }
       )    
     }
   }
+  selectRow(row) {
+    window.open(row.url, '_blank');
+  }
+  displayedColumns: string[] = ['title', 'created_at',"actions"];
+  
 
 }
