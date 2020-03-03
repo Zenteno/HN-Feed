@@ -20,7 +20,7 @@ mongoose.connect(dbConfig.db, {
 )
 
 // Setting up port with express js
-const articleRoute = require('../backend/routes/article.route')
+const articleRoute = require('./routes/article.route')
 const app = express();
 app.use(bodyParser.json());
 
@@ -81,9 +81,9 @@ cron.schedule('0 * * * *', () => {
 	    		//find if article already exists
 	    		Article.findOne({
 	    			object_id : object_id,
-	    		},(err,art) => {
+	    		},(errr,art) => {
 	    			//if element doesn't exists, it creates
-	    			if(error){
+	    			if(errr){
 	    				Article.create(article, (error, dd) => {
 							if (error) {
 								return next(error)

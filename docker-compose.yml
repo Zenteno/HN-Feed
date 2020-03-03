@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: nodejs
+    restart: unless-stopped
+    ports:
+      - "80:4000"
+    volumes:
+      - ./backend:/home/node/app
+      - ./backend/node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: /home/node/app/node_modules/.bin/nodemon server.js
+
+  db:
+    image: mongo:latest
+    container_name: mongo_test
+    restart: unless-stopped
+    volumes:     
+      - dbdata:/data/db
+    networks:
+      - app-network  
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules: 
