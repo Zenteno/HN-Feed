@@ -29,6 +29,14 @@ export class ApiService {
     )
   }
 
+  // Delete article
+  deactivateArticle(id): Observable<any> {
+    let url = `${this.baseUri}/deactivate/${id}`;
+    return this.http.post(url, { headers: this.headers }).pipe(
+      catchError(this.errorMgmt)
+    )
+  }
+
   // Error handling 
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';

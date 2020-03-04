@@ -18,7 +18,7 @@ articleRoute.route('/create').post((req, res, next) => {
 
 // Get All Articles
 articleRoute.route('/').get((req, res) => {
-	Article.find((error, data) => {
+	Article.find({ visible: true},(error, data) => {
 		if (error) {
 			return next(error)
 		} else {
@@ -32,6 +32,20 @@ articleRoute.route('/').get((req, res) => {
 // Delete article
 articleRoute.route('/delete/:id').delete((req, res, next) => {
 	Article.findOneAndRemove(req.params.id, (error, data) => {
+		if (error) {
+			return next(error);
+		} else {
+			res.status(200).json({
+				msg: data
+			})
+		}
+	})
+})
+
+
+// DeActivate article
+articleRoute.route('/deactivate/:id').post((req, res, next) => {
+	Article.updateOne({ _id : req.params.id },{ visible : false }, (error, data) => {
 		if (error) {
 			return next(error);
 		} else {

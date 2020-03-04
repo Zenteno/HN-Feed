@@ -17,7 +17,10 @@ let Article = new Schema({
    },
    url: {
       type: String
-   }
+   },
+   visible: {
+   		type: Boolean
+   },
 }, {
    collection: 'articles'
 })

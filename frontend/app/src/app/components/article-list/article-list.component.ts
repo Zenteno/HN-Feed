@@ -52,7 +52,7 @@ export class ArticleListComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe(dialogResult => {
 			if(dialogResult){
-				this.apiService.deleteArticle(article._id).subscribe((data) => {
+				this.apiService.deactivateArticle(article._id).subscribe((data) => {
 					this.ArticleList.splice(index, 1);
 					this.Article = new MatTableDataSource < any > (this.ArticleList);
 				});

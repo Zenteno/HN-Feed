@@ -64,46 +64,54 @@ cron.schedule('0 * * * *', () => {
 	// The whole response has been received. Print out the result.
 	resp.on('end', () => {
 		data = JSON.parse(data);
-		data["hits"].forEach(obj => {
-    		const title = obj["title"] || obj["story_title"];
-    		const url = obj["url"] || obj["story_url"];
-    		const object_id = parseInt(obj["objectID"]);
-    		if(title!=null && url != null){
-	    		const author = obj["author"];
-	    		const created_at = obj["created_at"];
-	    		const article = {
-	    			title: title,
-	    			url : url,
-	    			created_at: created_at,
-	    			author :  author,
-	    			objectId: object_id,
-	    		};
-	    		//find if article already exists
-	    		Article.findOne({
-	    			"objectId" : object_id,
-	    		},(errr,art) => {
-	    			//if element doesn't exists, it creates
-	    			if(art == null){
-	    				Article.create(article, (error, dd) => {
-							if (error) {
-								return next(error)
-							}else{
-								console.info("Post created");
-							}
-						});
-					}
-	    		});
-	    		
+		data["hits"].sort((a,b) => new Date(b["created_at"]).getTime() - new Date(a["created_at"]).getTime());
+		// I look for the newest element inserted
+		Article.findOne({}).sort({ created_at : 'desc'}).exec((err, artcle)=>{ 
+			const newest = artcle;
+			let newest_date = null;
+			if(newest!=null)
+				newest_date = new Date(newest["created_at"]);
+			for(var i in data["hits"]){
+	    		const obj = data["hits"][i];
+	    		const title = obj["title"] || obj["story_title"];
+	    		const url = obj["url"] || obj["story_url"];
+	    		const object_id = parseInt(obj["objectID"]);
+	    		if(title!=null && url != null){
+		    		const author = obj["author"];
+		    		const created_at = obj["created_at"];
+
+		    		const article = {
+		    			title: title,
+		    			url : url,
+		    			created_at: created_at,
+		    			author :  author,
+		    			objectId: object_id,
+		    			visible : true,
+		    		};
+		    		//if the list from the served returns me an element older than the newest element
+		    		// I stop searching
+		    		if(newest_date!=null && newest_date >= new Date(created_at))
+		    			break;
+		    		// if in the list is the newest element, I stop searching
+		    		if(newest_date!=null && newest["objectId"] == object_id)
+		    			break;
+
+		    		// if I reach this point, the article does not exists in the database
+		    		Article.create(article, (error, dd) => {
+						if (error) {
+							return next(error)
+						}else{
+							console.info("Post created");
+						}
+					});
+		    		
+	    		}	
     		}
-
-    		
-    	});
-
+		});
+    	
 	});
 
 	}).on("error", (err) => {
 		console.log("Error: " + err.message);
 	});
 });
-
-
