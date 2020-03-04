@@ -10,4 +10,18 @@ table{
 
 .mat-row:hover{
 	cursor: pointer;
+	background-color: #fafafa
+}
+
+.mat-row{
+	background-color: #fff;
+	border: 1px #ccc;
+}
+.title{
+	color: #333;
+	font-size: 13pt;
+}
+.author{
+	color: #999;
+	font-size: 10pt;
 }

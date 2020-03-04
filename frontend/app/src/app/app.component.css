@@ -3,6 +3,19 @@ body{
 	overflow: hidden;
 }
 
-.mat-toolbar{
-	height: 20vh;
+.header {
+  padding: 60px;
+  text-align: left;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
+  font-family: Arial;
+}
+
+.header h1{
+	font-size: 70px;
+}
+.header p{
+	padding-top: 10px;
+	font-size: 25px;
 }

@@ -4,7 +4,8 @@
 
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef> Title </th>
-      <td mat-cell *matCellDef="let element"  (click)="selectRow(element)"> {{element.title +" - "+ element.author }} </td>
+      <td mat-cell *matCellDef="let element"  (click)="selectRow(element)"> 
+      	<span class="title">{{element.title}}</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span class="author">{{ element.author }}</span> </td>
     </ng-container>
 
   <!-- Weight Column -->
