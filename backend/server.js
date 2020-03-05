@@ -1,7 +1,6 @@
 let express = require('express'),
 	path = require('path'),
 	mongoose = require('mongoose'),
-	cors = require('cors'),
 	bodyParser = require('body-parser'),
 	dbConfig = require('./database/db');
 	https = require('https');
@@ -28,7 +27,11 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-app.use(cors()); 
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*")
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+	next()
+})
 app.use(express.static(path.join(__dirname, 'dist/app')));
 app.use('/', express.static(path.join(__dirname, 'dist/app')));
 app.use('/api', articleRoute)
@@ -51,8 +54,7 @@ app.use(function (err, req, res, next) {
 		err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
 	res.status(err.statusCode).send(err.message); // All HTTP requests must have a response, so let's send back an error with its status code and message
 });
-
-cron.schedule('0 * * * *', () => {
+const cronJob = function(){
 	https.get('https://hn.algolia.com/api/v1/search_by_date?query=nodejs', (resp) => {
 	let data = '';
 	let Article = require('./models/Article');
@@ -114,4 +116,6 @@ cron.schedule('0 * * * *', () => {
 	}).on("error", (err) => {
 		console.log("Error: " + err.message);
 	});
-});
+};
+cron.schedule('0 * * * *', cronJob);
+cronJob();

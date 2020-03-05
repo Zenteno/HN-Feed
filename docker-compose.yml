@@ -1,28 +1,40 @@
 version: '3'
 
 services:
-  nodejs:
+  backend:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: nodejs
+      dockerfile: Dockerback
     container_name: nodejs
     restart: unless-stopped
     ports:
-      - "80:4000"
+      - "4000:4000"
     volumes:
       - ./backend:/home/node/app
-      - ./backend/node_modules:/home/node/app/node_modules
+      - /home/node/app/node_modules
     networks:
       - app-network
-    command: /home/node/app/node_modules/.bin/nodemon server.js
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfront
+    container_name: angular
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - db
 
   db:
     image: mongo:latest
     container_name: mongo_test
     restart: unless-stopped
     volumes:     
-      - dbdata:/data/db
+      - ./dbdata:/data/db
     networks:
       - app-network  
 
@@ -32,4 +44,3 @@ networks:
 
 volumes:
   dbdata:
-  node_modules: 
